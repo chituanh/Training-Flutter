@@ -16,6 +16,8 @@ enum FilterOptions {
 class ProductsOverviewScreen extends StatefulWidget {
   @override
   _ProductsOverviewScreenState createState() => _ProductsOverviewScreenState();
+
+  static const routeName = '/product-overview';
 }
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
@@ -25,11 +27,10 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
 
   @override
   void didChangeDependencies() {
-    try {
+    if (_isInit) {
       setState(() {
         _isLoading = true;
       });
-
       Provider.of<Products>(context, listen: false)
           .fetchAndSetProduct()
           .then((_) {
@@ -37,17 +38,15 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
           _isLoading = false;
         });
       });
-    } catch (error) {
-      print(error);
     }
-
+    _isInit = false;
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
     //final productsContaner = Provider.of<Products>(context);
-
+    print("build overview");
     return Container(
       child: Scaffold(
         appBar: AppBar(

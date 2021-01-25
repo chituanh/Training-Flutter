@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../providers/auth.dart';
 import '../providers/cart.dart';
 import '../providers/product.dart';
 import '../screens/products_detail_screen.dart';
@@ -15,7 +16,8 @@ class ProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(context);
     final cart = Provider.of<Cart>(context, listen: false);
-    print("Buil");
+    final authData = Provider.of<Auth>(context, listen: false);
+    print("Buil item");
     return Card(
       elevation: 10,
       child: GridTile(
@@ -44,14 +46,14 @@ class ProductItem extends StatelessWidget {
             ),
             onPressed: () async {
               try {
-                await product.toggleFavoriteStatus();
+                await product.toggleFavoriteStatus(
+                    authData.token, authData.userId);
                 var scaffold = Scaffold.of(context);
                 scaffold.showSnackBar(
                   SnackBar(
                     content: product.isFavorite == false
                         ? Text('Bạn đã hủy thích ${product.title}')
                         : Text('Bạn đã thích ${product.title}'),
-                    behavior: SnackBarBehavior.floating,
                     duration: Duration(seconds: 2),
                   ),
                 );

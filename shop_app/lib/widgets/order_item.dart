@@ -44,6 +44,7 @@ class _OrdersItemState extends State<OrdersItem> {
                   180,
                 ),
                 child: ListView(
+                  physics: BouncingScrollPhysics(),
                   children: widget.order.products
                       .map((prod) => Padding(
                             padding: const EdgeInsets.symmetric(
